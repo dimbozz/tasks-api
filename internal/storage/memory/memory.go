@@ -25,8 +25,8 @@ func New() storage.Storage {
 // Реализация метода List для соответствия интерфейсу
 // возвращает КОПИЮ всех задач (потокобезопасное чтение)
 func (s *MemoryStorage) List() []models.Task {
-	s.mu.RLock() // блокируем запись, разрешаем множественное чтение (read-heavy)
-	defer s.mu.RUnlock() // снимаем блокировку при выходе из функции
+	s.mu.RLock()                               // блокируем запись, разрешаем множественное чтение (read-heavy)
+	defer s.mu.RUnlock()                       // снимаем блокировку при выходе из функции
 	tasks := make([]models.Task, len(s.tasks)) // создаем копию
 	copy(tasks, s.tasks)                       // копируем данные
 	return tasks                               // возвращаем копию (без race condition)
@@ -35,7 +35,7 @@ func (s *MemoryStorage) List() []models.Task {
 // Реализация метода Create для соответствия интерфейсу
 // создает новую задачу с автоинкрементным ID и текущей датой
 func (s *MemoryStorage) Create(task models.Task) (models.Task, error) {
-	s.mu.Lock() // Эксклюзивная блокировка для безопасной записи
+	s.mu.Lock()         // Эксклюзивная блокировка для безопасной записи
 	defer s.mu.Unlock() // снимаем блокировку при выходе из функции
 
 	task.ID = s.nextID              // устанавливаем уникальный ID

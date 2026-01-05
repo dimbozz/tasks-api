@@ -3,9 +3,11 @@ package handlers
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"strconv"
 	"strings"
+	"tasks-api/internal/models"
 	"tasks-api/internal/storage"
 )
 
@@ -25,12 +27,34 @@ func (h *Handler) TasksCollection(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(tasks)
 
 	case http.MethodPost:
-		// Создать задачу (заглушка ШАГ 4)
+		// реализация POST /tasks
+		if r.Header.Get("Content-Type") != "application/json" {
+			http.Error(w, `{"error": "Content-Type must be application/json"}`, http.StatusUnsupportedMediaType)
+			return
+		}
+
+		var task models.Task
+		if err := json.NewDecoder(r.Body).Decode(&task); err != nil {
+			http.Error(w, `{"error": "Invalid JSON"}`, http.StatusBadRequest)
+			return
+		}
+
+		// Валидация обязательных полей
+		if task.Title == "" {
+			http.Error(w, `{"error": "Title is required"}`, http.StatusBadRequest)
+			return
+		}
+
+		// Создание задачи через Storage
+		createdTask, err := h.Store.Create(task)
+		if err != nil {
+			http.Error(w, `{"error": "Failed to create task"}`, http.StatusInternalServerError)
+			return
+		}
+
+		w.Header().Set("Location", fmt.Sprintf("/tasks/%d", createdTask.ID))
 		w.WriteHeader(http.StatusCreated)
-		json.NewEncoder(w).Encode(map[string]interface{}{
-			"id":      1,
-			"message": "Task created (step 4)",
-		})
+		json.NewEncoder(w).Encode(createdTask)
 
 	default:
 		http.Error(w, `{"error": "Method not allowed"}`, http.StatusMethodNotAllowed)
@@ -67,12 +91,26 @@ func (h *Handler) TaskItem(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(task)
 
 	case http.MethodPut, http.MethodPatch:
-		// Обновить задачу (заглушка ШАГ 4)
+		if r.Header.Get("Content-Type") != "application/json" {
+			http.Error(w, `{"error": "Content-Type must be application/json"}`, http.StatusUnsupportedMediaType)
+			return
+		}
+
+		var update models.Task
+		if err := json.NewDecoder(r.Body).Decode(&update); err != nil {
+			http.Error(w, `{"error": "Invalid JSON"}`, http.StatusBadRequest)
+			return
+		}
+
+		// Обновление через Storage.Update()
+		updatedTask, err := h.Store.Update(id, update)
+		if err != nil {
+			http.Error(w, `{"error": "Task not found"}`, http.StatusNotFound)
+			return
+		}
+
 		w.WriteHeader(http.StatusOK)
-		json.NewEncoder(w).Encode(map[string]interface{}{
-			"id":      id,
-			"message": "Task updated (step 4)",
-		})
+		json.NewEncoder(w).Encode(updatedTask)
 
 	case http.MethodDelete:
 		err := h.Store.Delete(id)
