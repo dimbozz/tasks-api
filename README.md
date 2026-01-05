@@ -32,13 +32,17 @@ Task {
 curl http://localhost:8081/tasks
 
 # Создать задачу POST /tasks  
-curl -X POST http://localhost:8081/tasks -d '{}'
+curl -X POST http://localhost:8081/tasks \
+  -H "Content-Type: application/json" \
+  -d '{"title": "Купить колбасу", "description": "2 кг", "done": false}'
 
 # Получить задачу GET /tasks/1
 curl http://localhost:8081/tasks/1
 
 # Обновить задачу PUT /tasks/1
-curl -X PUT http://localhost:8081/tasks/1 -d '{}'
+curl -X PATCH http://localhost:8081/tasks/1 \
+  -H "Content-Type: application/json" \
+  -d '{"title": "Купить молоко", "done": true}'
 
 # Удалить задачу DELETE /tasks/1
 curl -X DELETE http://localhost:8081/tasks/1
