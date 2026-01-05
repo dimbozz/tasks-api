@@ -27,3 +27,18 @@ Task {
 - Хранение: in‑memory (синхронизация по необходимости).
 - Логи входящих запросов (минимум: метод и путь).
 - PRO по желанию: GET /health (health‑check) и описание API (таблица эндпоинтов в README или OpenAPI‑файл).
+
+# Список задач GET /tasks
+curl http://localhost:8081/tasks
+
+# Создать задачу POST /tasks  
+curl -X POST http://localhost:8081/tasks -d '{}'
+
+# Получить задачу GET /tasks/1
+curl http://localhost:8081/tasks/1
+
+# Обновить задачу PUT /tasks/1
+curl -X PUT http://localhost:8081/tasks/1 -d '{}'
+
+# Удалить задачу DELETE /tasks/1
+curl -X DELETE http://localhost:8081/tasks/1

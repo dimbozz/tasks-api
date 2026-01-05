@@ -20,8 +20,8 @@ func main() {
 	mux.HandleFunc("/tasks", h.TasksCollection) // GET, POST
 	mux.HandleFunc("/tasks/", h.TaskItem)       // GET, PUT, DELETE
 
-	log.Println("server listening on :8080")
-	if err := http.ListenAndServe(":8080", mux); err != nil {
+	log.Println("server listening on :8081")
+	if err := http.ListenAndServe(":8081", mux); err != nil {
 		log.Fatal(err)
 	}
 }
