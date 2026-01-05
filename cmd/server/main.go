@@ -7,11 +7,12 @@ import (
 
 	"tasks-api/internal/handlers"
 	"tasks-api/internal/storage"
+	"tasks-api/internal/storage/memory"
 )
 
 func main() {
 	// TODO: подключите конкретную реализацию (in‑memory) интерфейса Storage
-	var store storage.Storage // = memory.New() // реализуйте сами
+	var store storage.Storage = memory.New()
 
 	h := handlers.New(store)
 
