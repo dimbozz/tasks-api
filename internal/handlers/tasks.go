@@ -4,6 +4,7 @@ package handlers
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"strconv"
 	"strings"
@@ -17,6 +18,7 @@ func New(s storage.Storage) *Handler { return &Handler{Store: s} }
 
 // /tasks (GET, POST)
 func (h *Handler) TasksCollection(w http.ResponseWriter, r *http.Request) {
+	log.Printf("%s %s", r.Method, r.URL.Path) // Логирование запроса
 	w.Header().Set("Content-Type", "application/json")
 
 	switch r.Method {
@@ -63,6 +65,7 @@ func (h *Handler) TasksCollection(w http.ResponseWriter, r *http.Request) {
 
 // /tasks/{id} (GET, PUT, DELETE)
 func (h *Handler) TaskItem(w http.ResponseWriter, r *http.Request) {
+	log.Printf("%s %s", r.Method, r.URL.Path) // Логирование запроса
 	w.Header().Set("Content-Type", "application/json")
 
 	// Извлечение ID из пути
