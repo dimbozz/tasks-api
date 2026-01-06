@@ -17,8 +17,8 @@ func main() {
 	h := handlers.New(store)
 
 	mux := http.NewServeMux()
-	mux.HandleFunc("/tasks", h.TasksCollection) // GET, POST
-	mux.HandleFunc("/tasks/", h.TaskItem)       // GET, PUT, DELETE
+	mux.HandleFunc("/tasks", h.TasksCollection) // регистрация маршрута коллекции
+	mux.HandleFunc("/tasks/", h.TaskItem)       // регистрация маршрута элемента
 
 	log.Println("server listening on :8081")
 	if err := http.ListenAndServe(":8081", mux); err != nil {
