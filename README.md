@@ -25,6 +25,11 @@ Task {
 - Логи входящих запросов (минимум: метод и путь).
 - PRO по желанию: GET /health (health‑check) и описание API (таблица эндпоинтов в README или OpenAPI‑файл).
 
+Запуск
+```
+go run ./cmd/server/main.go
+```
+
 Тестовые запросы:
 - Список задач GET /tasks
 ```sh

@@ -62,3 +62,20 @@ curl -X DELETE http://localhost:8081/tasks/2
 curl -X DELETE http://localhost:8081/tasks/3
 {"error":"Task not found"}
 ```
+
+- Пример логов
+```
+go run ./cmd/server/main.go        
+2026/01/06 16:06:36 server listening on :8081
+2026/01/06 16:06:44 GET /tasks
+2026/01/06 16:07:33 POST /tasks
+2026/01/06 16:07:53 GET /tasks/1
+2026/01/06 16:08:14 PATCH /tasks/1
+2026/01/06 16:08:35 GET /tasks/2
+2026/01/06 16:14:11 GET /tasks
+2026/01/06 16:15:22 GET /tasks/1
+2026/01/06 16:16:39 POST /tasks
+2026/01/06 16:17:05 GET /tasks
+2026/01/06 16:17:52 POST /tasks
+2026/01/06 16:19:40 GET /tasks/2
+```
